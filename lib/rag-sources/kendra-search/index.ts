@@ -18,7 +18,7 @@ export interface KendraSearchProps extends cdk.NestedStackProps {
   dataBucket: s3.Bucket;
   architecture: lambda.Architecture;
   runtime: lambda.Runtime;
-  vpc: ec2.Vpc;
+  // vpc: ec2.Vpc;
 }
 
 export class KendraSearch extends Construct {
@@ -32,8 +32,8 @@ export class KendraSearch extends Construct {
 
     let dataBucket = props.dataBucket;
 
-    const { architecture, runtime, vpc } = props;
-
+    // const { architecture, runtime, vpc } = props;
+    const { architecture, runtime } = props; 
     if (!dataBucket) {
       dataBucket = new s3.Bucket(this, 'DataBucket', {
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,

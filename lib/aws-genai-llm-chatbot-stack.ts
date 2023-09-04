@@ -34,13 +34,13 @@ export class AwsGenaiLllmChatbotStack extends cdk.Stack {
     /* --- BASIC USAGE --- */
 
     // If you have access to bedrock, set up here the region and endpoint url
-    const bedrockRegion = 'region';
+    const bedrockRegion = 'us-east-1';
     // For example https://bedrock.us-east-1.amazonaws.com
-    const bedrockEndpointUrl = 'https://endpoint-url';
+    const bedrockEndpointUrl = 'https://bedrock.us-east-1.amazonaws.com';
 
     // VPC Construct
     // Create subnets for DBs and VPC endpoints
-    const vpc = new Vpc(this, 'Vpc');
+    // const vpc = new Vpc(this, 'Vpc');
 
     // Authentication Construct
     const authentication = new Authentication(this, 'Authentication');
@@ -175,7 +175,7 @@ export class AwsGenaiLllmChatbotStack extends cdk.Stack {
     */
 
     /* --- OPTIONAL: RAG SECTION --- */
-    /*
+    
     // Create a topic for the data bucket this will act as a message bus only for uploaded/deleted documents
     const dataTopic = new sns.Topic(this, 'DataTopic');
 
@@ -214,7 +214,7 @@ export class AwsGenaiLllmChatbotStack extends cdk.Stack {
 
 
     // RAG SOURCE: OpenSearch Vector Search Construct
-    const openSearchVectorSearch = new OpenSearchVectorSearch(this, 'OpenSearchVectorSearch', {
+   /* const openSearchVectorSearch = new OpenSearchVectorSearch(this, 'OpenSearchVectorSearch', {
       vpc: vpc.vpc,
       dataBucket: dataBucket,
       collectionName: 'genai-chatbot',
@@ -238,13 +238,13 @@ export class AwsGenaiLllmChatbotStack extends cdk.Stack {
       type: 'opensearchvectorsearch',
       api: openSearchVectorSearch.api,
     });
-
+    */
     // RAG SOURCE: Kendra Search Construct
     const kendraSearch = new KendraSearch(this, 'KendraSearch', {
       dataBucket: dataBucket,
       architecture,
       runtime,
-      vpc: vpc.vpc,
+      // vpc: vpc.vpc,
     });
     // Subscribe the Kendra Search ingestion queue to the data topic to receive upload/delete events and index the documents
     dataTopic.addSubscription(
@@ -259,7 +259,7 @@ export class AwsGenaiLllmChatbotStack extends cdk.Stack {
     });
 
     // RAG SOURCE: Aurora PG Vector Construct
-    const auroraPgVector = new AuroraPgVector(this, 'AuroraPgVector', {
+   /* const auroraPgVector = new AuroraPgVector(this, 'AuroraPgVector', {
       vpc: vpc.vpc,
       dataBucket: dataBucket,
       architecture,
@@ -275,7 +275,7 @@ export class AwsGenaiLllmChatbotStack extends cdk.Stack {
     langchainInterface.addRagSource({
       type: 'aurorapgvector',
       api: auroraPgVector.api,
-    });
+    }); */
     
     /* --- USER INTERFACE --- */
     // User Interface Construct
